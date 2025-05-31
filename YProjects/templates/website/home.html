@@ -1,0 +1,195 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Banner Section -->
+<div class="slider-wrapper">
+    <div class="slides-container">
+        {% for banner in banners %}
+        <div class="slide">
+            <img src="{{ banner.image.url }}" alt="{{ banner.title }}">
+        </div>
+        {% empty %}
+        <!-- Default banners if none in database -->
+        <div class="slide">
+            <img src="{% static 'website/banner/banner-2.jpg' %}" alt="Banner 1">
+        </div>
+        <div class="slide">
+            <img src="{% static 'website/banner/banner-3.jpg' %}" alt="Banner 2">
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Dots -->
+<div class="slide-dot">
+    {% for banner in banners %}
+    <span class="dot" onclick="currentSlide({{ forloop.counter }})"></span>
+    {% empty %}
+    <span class="dot" onclick="currentSlide(1)"></span> 
+    <span class="dot" onclick="currentSlide(2)"></span> 
+    {% endfor %}
+</div>
+
+<!-- About Section -->
+<section id="about">
+    <div class="content">
+        <h6>{{ about_us.title|default:"About Harsha Designers" }}</h6>
+        <h3>{{ about_us.subtitle|default:"Best Designers in India" }}</h3>
+        <p>{{ about_us.description|default:"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Expedita temporibus eveniet voluptatibus ipsa molestias quisquam totam sunt cum assumenda? Rem eaque soluta odio vero sequi, expedita voluptate quae voluptas repellat." }}</p>
+        <div class="abt-content">
+            <div class="abt-detail">
+                <div class="abt-img">
+                    {% if about_us.about_image %}
+                        <img src="{{ about_us.about_image.url }}" alt="Happy Families">
+                    {% else %}
+                        <img src="{% static 'website/abt1.jpg' %}" alt="Happy Families">
+                    {% endif %}
+                    <h3>{{ about_us.happy_families|default:"30" }}+</h3>
+                    <p>Happy Families</p>
+                </div>
+            </div>
+            <div class="abt-detail">
+                <div class="abt-img">
+                    {% if about_us.about_image %}
+                        <img src="{{ about_us.about_image.url }}" alt="Completed Projects">
+                    {% else %}
+                        <img src="{% static 'website/abt1.jpg' %}" alt="Completed Projects">
+                    {% endif %}
+                    <h3>{{ about_us.completed_projects|default:"30" }}+</h3>
+                    <p>Completed <br>Projects</p>
+                </div>
+            </div>
+            <div class="abt-detail">
+                <div class="abt-img">
+                    {% if about_us.about_image %}
+                        <img src="{{ about_us.about_image.url }}" alt="Landmarks">
+                    {% else %}
+                        <img src="{% static 'website/abt1.jpg' %}" alt="Landmarks">
+                    {% endif %}
+                    <h3>{{ about_us.landmarks|default:"30" }}+</h3>
+                    <p>Landmarks</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Projects Section -->
+<section id="projects">
+    <div class="projects">
+        <h3>Our Projects</h3>
+        <div class="carousel-wrapper">
+            <div class="owl-carousel product-carousel">
+                {% for project in projects %}
+                <div class="item">
+                    <div class="prg-image">
+                        <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                    </div>
+                    <div class="project-title"><h3>{{ project.title }}</h3></div>
+                    <div class="project-details">
+                        <p>{{ project.project_type }}</p>
+                        <h6>{{ project.location }}</h6>
+                    </div>
+                    <div class="price"><h5>{{ project.price }}</h5></div>
+                </div>
+                {% empty %}
+                <!-- Default projects if none in database -->
+                <div class="item">
+                    <div class="prg-image">
+                        <img src="{% static 'website/projects/altius.jpg' %}" alt="Meadows Villas">
+                    </div>
+                    <div class="project-title"><h3>MEADOWS VILLAS</h3></div>
+                    <div class="project-details">
+                        <p>3 BHK Apartments</p>
+                        <h6>Opp Bannerghatta - Jigani Road</h6>
+                    </div>
+                    <div class="price"><h5>₹ 68* L Onwards</h5></div>
+                </div>
+                <div class="item">
+                    <div class="prg-image">
+                        <img src="{% static 'website/projects/crosswinds.jpg' %}" alt="Crosswinds">
+                    </div>
+                    <div class="project-title"><h3>CROSSWINDS</h3></div>
+                    <div class="project-details">
+                        <p>3 BHK Apartments</p>
+                        <h6>Opp Bannerghatta - Jigani Road</h6>
+                    </div>
+                    <div class="price"><h5>₹ 68* L Onwards</h5></div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contactus">
+    <div class="enqry">
+        <div class="enq-head">
+            <h5>Enquiry</h5>
+            <h3>Get into Connect with Us</h3>
+        </div>
+
+        <form class="form-container" method="post" action="{% url 'contact_ajax' %}" id="contact-form">
+            {% csrf_token %}
+            <div class="input1">
+                <input type="text" name="name" placeholder="Your Name" class="delay1" required>
+            </div>
+            <div class="input1">
+                <input type="email" name="email" placeholder="EMail Id" class="delay2" required>
+            </div>
+            <div class="input1">
+                <input type="tel" name="mobile" placeholder="Mobile Phone" maxlength="10" class="late" required>
+            </div>
+        </form>
+        <div class="button"> 
+            <input type="button" value="Submit" id="smtbt">
+        </div>
+    </div>
+
+    <div class="gle-map">
+        {% if company_info.google_maps_embed %}
+            {{ company_info.google_maps_embed|safe }}
+        {% else %}
+            <iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&amp;q=HARSHA+DESIGNERS+Jedarpalayam&maptype=satellite" width="600" height="500" frameborder="0" style="border:0; width: 100%;" allowfullscreen=""></iframe>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// AJAX form submission
+$(document).ready(function() {
+    $('#smtbt').click(function(e) {
+        e.preventDefault();
+        
+        var formData = {
+            'name': $('input[name="name"]').val(),
+            'email': $('input[name="email"]').val(),
+            'mobile': $('input[name="mobile"]').val(),
+            'csrfmiddlewaretoken': $('[name=csrfmiddlewaretoken]').val()
+        };
+        
+        $.ajax({
+            type: 'POST',
+            url: '{% url "contact_ajax" %}',
+            data: JSON.stringify(formData),
+            contentType: 'application/json',
+            success: function(data) {
+                if (data.status === 'success') {
+                    alert(data.message);
+                    $('#contact-form')[0].reset();
+                } else {
+                    alert(data.message);
+                }
+            },
+            error: function() {
+                alert('An error occurred. Please try again.');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

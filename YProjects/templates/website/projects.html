@@ -1,0 +1,117 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Our Projects Section -->
+<section id="projects" style="padding-top: 50px;">
+    <div class="projects">
+        <h3>Our Projects</h3>
+        <div class="carousel-wrapper">
+            <div class="owl-carousel product-carousel">
+                {% for project in projects %}
+                <div class="item">
+                    <div class="prg-image">
+                        <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                    </div>
+                    <div class="project-title"><h3>{{ project.title }}</h3></div>
+                    <div class="project-details">
+                        <p>{{ project.project_type }}</p>
+                        <h6>{{ project.location }}</h6>
+                    </div>
+                    <div class="price"><h5>{{ project.price }}</h5></div>
+                    {% if project.description %}
+                    <div class="project-description">
+                        <p>{{ project.description|truncatewords:20 }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                {% empty %}
+                <!-- Default projects if none in database -->
+                <div class="item">
+                    <div class="prg-image">
+                        <img src="{% static 'website/projects/altius.jpg' %}" alt="Meadows Villas">
+                    </div>
+                    <div class="project-title"><h3>MEADOWS VILLAS</h3></div>
+                    <div class="project-details">
+                        <p>3 BHK Apartments</p>
+                        <h6>Opp Bannerghatta - Jigani Road</h6>
+                    </div>
+                    <div class="price"><h5>₹ 68* L Onwards</h5></div>
+                </div>
+                <div class="item">
+                    <div class="prg-image">
+                        <img src="{% static 'website/projects/crosswinds.jpg' %}" alt="Crosswinds">
+                    </div>
+                    <div class="project-title"><h3>CROSSWINDS</h3></div>
+                    <div class="project-details">
+                        <p>3 BHK Apartments</p>
+                        <h6>Opp Bannerghatta - Jigani Road</h6>
+                    </div>
+                    <div class="price"><h5>₹ 68* L Onwards</h5></div>
+                </div>
+                <div class="item">
+                    <div class="prg-image">
+                        <img src="{% static 'website/projects/greenmeadows1.jpg' %}" alt="Green Meadows">
+                    </div>
+                    <div class="project-title"><h3>GREEN MEADOWS</h3></div>
+                    <div class="project-details">
+                        <p>3 BHK Apartments</p>
+                        <h6>Opp Bannerghatta - Jigani Road</h6>
+                    </div>
+                    <div class="price"><h5>₹ 68* L Onwards</h5></div>
+                </div>
+                <div class="item">
+                    <div class="prg-image">
+                        <img src="{% static 'website/projects/pegasus.jpg' %}" alt="Pegasus">
+                    </div>
+                    <div class="project-title"><h3>PEGASUS</h3></div>
+                    <div class="project-details">
+                        <p>3 BHK Apartments</p>
+                        <h6>Opp Bannerghatta - Jigani Road</h6>
+                    </div>
+                    <div class="price"><h5>₹ 68* L Onwards</h5></div>
+                </div>
+                <div class="item">
+                    <div class="prg-image">
+                        <img src="{% static 'website/projects/rollinghills.jpg' %}" alt="Rolling Hills">
+                    </div>
+                    <div class="project-title"><h3>ROLLING HILLS</h3></div>
+                    <div class="project-details">
+                        <p>3 BHK Apartments</p>
+                        <h6>Opp Bannerghatta - Jigani Road</h6>
+                    </div>
+                    <div class="price"><h5>₹ 68* L Onwards</h5></div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function(){
+    $('.product-carousel').owlCarousel({
+        loop: true,
+        margin: 20,
+        nav: true,
+        dots: false,
+        autoplay: true,
+        autoplayTimeout: 4000,
+        autoplayHoverPause: true,
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 2
+            },
+            1000: {
+                items: 3
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

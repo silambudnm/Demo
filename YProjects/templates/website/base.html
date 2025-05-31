@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ page_title }} - Harsha Designers{% endblock %}</title>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="{% static 'website/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'website/css/mobile.css' %}">
+    <link rel="stylesheet" href="{% static 'website/css/tab.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="main">
+        <!-- Header -->
+        <header>
+            <div class="head">
+                <div class="lft-mnu">
+                    <div class="he-logo">
+                        <a href="{% url 'home' %}">
+                            {% if company_info.logo %}
+                                    <img src="{{ company_info.logo.url }}" class="headlogo" alt="{{ company_info.company_name }}">
+                                
+                            {% else %}
+                                    <img src="{% static 'website/image/ban-logo.jpg' %}" class="headlogo" alt="Harsha Designers">
+                            {% endif %}
+                        </a>
+                    </div>
+                </div>
+                <div class="rgt-mnu">
+                    <ul class="conta">
+                        <li><a href="#">{{ company_info.location|default:"Bangalore" }}</a></li>
+                        <li><a href="tel:{{ company_info.phone|default:'8012961197' }}">{{ company_info.phone|default:"8012961197" }}</a></li>
+                        <li><a href="mailto:{{ company_info.email|default:'info.harshadesigners@mail.com' }}">{{ company_info.email|default:"info.harshadesigners@mail.com" }}</a></li>
+                    </ul>
+                    <ul class="main-mnu">
+                        <li><a href="{% url 'home' %}">HOME</a></li>
+                        <li><a href="{% url 'about_us' %}">ABOUT US</a></li>
+                        <li><a href="{% url 'projects' %}">OUR PROJECTS</a></li>
+                        <li><a href="{% url 'contact_us' %}">CONTACT US</a></li>
+                    </ul>
+                </div>
+                <div class="phn-menu">
+                    <a href="#" class="mnlik">
+                        <span></span>
+                    </a>
+                </div>
+                <div class="sld-menu">
+                    <ul class="sld-list">
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'about_us' %}">About</a></li>
+                        <li><a href="{% url 'projects' %}">Our Projects</a></li>
+                        <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <article>
+            <div class="body">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </article>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer">
+                <div class="foot-mid">
+                    <ul>
+                        <li><a href="{% url 'home' %}">HOME</a></li>
+                        <li><a href="{% url 'about_us' %}">ABOUT US</a></li>
+                        <li><a href="{% url 'projects' %}">OUR PROJECTS</a></li>
+                        <li><a href="{% url 'contact_us' %}">CONTACT US</a></li>
+                    </ul>
+                </div>
+                <div class="foot-last">
+                    <div class="foot-left">
+                        <ul>
+                            <li>&copy; COPYRIGHTS YAAM VERSE</li>
+                            <li><a href="#">PRIVACY POLICY</a></li>
+                            <li><a href="#">DESIGN : YAAM VERSE</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="foot-rgt">
+                        <ul>
+                            {% if company_info.facebook_url %}
+                            <li><a href="{{ company_info.facebook_url }}" class="fb" target="_blank"><img src="{% static 'website/image/foot-1.png' %}" alt="Facebook"></a></li>
+                            {% endif %}
+                            {% if company_info.instagram_url %}
+                            <li><a href="{{ company_info.instagram_url }}" class="insta" target="_blank"><img src="{% static 'website/image/foot-2.png' %}" alt="Instagram"></a></li>
+                            {% endif %}
+                            {% if company_info.twitter_url %}
+                            <li><a href="{{ company_info.twitter_url }}" class="twit" target="_blank"><img src="{% static 'website/image/foot-3.png' %}" alt="Twitter"></a></li>
+                            {% endif %}
+                            {% if company_info.youtube_url %}
+                            <li><a href="{{ company_info.youtube_url }}" class="yt" target="_blank"><img src="{% static 'website/image/foot-4.png' %}" alt="YouTube"></a></li>
+                            {% endif %}
+                            
+                            <!-- Default social links if none configured -->
+                            {% if not company_info.facebook_url and not company_info.instagram_url and not company_info.twitter_url and not company_info.youtube_url %}
+                            <li><a href="#" class="fb"><img src="{% static 'website/image/foot-1.png' %}" alt="Facebook"></a></li>
+                            <li><a href="#" class="insta"><img src="{% static 'website/image/foot-2.png' %}" alt="Instagram"></a></li>
+                            <li><a href="#" class="twit"><img src="{% static 'website/image/foot-3.png' %}" alt="Twitter"></a></li>
+                            <li><a href="#" class="yt"><img src="{% static 'website/image/foot-4.png' %}" alt="YouTube"></a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- JavaScript Files -->
+    <script src="{% static 'website/js/jquery-3.7.1.min.js' %}"></script>
+    <script src="{% static 'website/js/jquery.cycle2.min.js' %}"></script>
+    <script src="{% static 'website/js/jquery.cycle2.swipe.min.js' %}"></script>
+    <script src="{% static 'website/js/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'website/js/jquery.validate.js' %}"></script>
+    <script src="{% static 'website/js/lightgallery-all.min.js' %}"></script>
+    <script src="{% static 'website/js/magnify.js' %}"></script>
+    <script src="{% static 'website/js/modernizr-3.11.8.min.js' %}"></script>
+    <script src="{% static 'website/js/scrollreveal.min.js' %}"></script>
+    <script src="{% static 'website/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'website/js/main.js' %}"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

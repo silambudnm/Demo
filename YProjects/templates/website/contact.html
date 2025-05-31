@@ -1,0 +1,74 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Contact Section -->
+<section id="contactus" style="padding-top: 50px;">
+    <div class="enqry">
+        <div class="enq-head">
+            <h5>Enquiry</h5>
+            <h3>Get into Connect with Us</h3>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" style="padding: 10px; margin: 20px 0; border-radius: 5px; {% if message.tags == 'success' %}background: #d4edda; color: #155724; border: 1px solid #c3e6cb;{% else %}background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form class="form-container" method="post" id="contact-form">
+            {% csrf_token %}
+            <div class="input1">
+                <input type="text" name="name" placeholder="Your Name" class="delay1" required>
+            </div>
+            <div class="input1">
+                <input type="email" name="email" placeholder="EMail Id" class="delay2" required>
+            </div>
+            <div class="input1">
+                <input type="tel" name="mobile" placeholder="Mobile Phone" maxlength="15" class="late" required>
+            </div>
+            <div class="input1">
+                <textarea name="message" placeholder="Your Message (Optional)" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; resize: vertical;"></textarea>
+            </div>
+        </form>
+        <div class="button"> 
+            <input type="submit" value="Submit" id="smtbt" form="contact-form">
+        </div>
+    </div>
+
+    <div class="gle-map">
+        {% if company_info.google_maps_embed %}
+            {{ company_info.google_maps_embed|safe }}
+        {% else %}
+            <iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&amp;q=HARSHA+DESIGNERS+Jedarpalayam&maptype=satellite" width="600" height="500" frameborder="0" style="border:0; width: 100%;" allowfullscreen=""></iframe>
+        {% endif %}
+    </div>
+
+    <!-- Contact Information -->
+    <div class="contact-info" style="padding: 50px 0; background: #f8f9fa;">
+        <div class="content">
+            <h3>Contact Information</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 30px;">
+                <div class="contact-item">
+                    <h4>📍 Address</h4>
+                    <p>{{ company_info.address|default:"Bangalore, Karnataka, India" }}</p>
+                </div>
+                <div class="contact-item">
+                    <h4>📞 Phone</h4>
+                    <p><a href="tel:{{ company_info.phone }}">{{ company_info.phone|default:"8012961197" }}</a></p>
+                </div>
+                <div class="contact-item">
+                    <h4>✉️ Email</h4>
+                    <p><a href="mailto:{{ company_info.email }}">{{ company_info.email|default:"info.harshadesigners@mail.com" }}</a></p>
+                </div>
+                <div class="contact-item">
+                    <h4>🏢 Office Hours</h4>
+                    <p>Monday - Saturday: 9:00 AM - 6:00 PM<br>Sunday: Closed</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

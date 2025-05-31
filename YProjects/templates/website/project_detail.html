@@ -1,0 +1,304 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Project Detail Section -->
+<section id="project-detail" style="padding-top: 50px;">
+    <div class="content">
+        <div class="project-header">
+            <h1>{{ project.title }}</h1>
+            <p class="project-location"><i class="fas fa-map-marker-alt"></i> {{ project.location }}</p>
+            <div class="project-status">
+                <span class="status-badge status-{{ project.status }}">{{ project.get_status_display }}</span>
+                {% if project.is_featured %}
+                <span class="featured-badge">Featured</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="project-content">
+            <div class="project-image">
+                {% if project.image %}
+                <img src="{{ project.image.url }}" alt="{{ project.title }}" class="main-image">
+                {% endif %}
+                
+                {% if project.images.all %}
+                <div class="project-gallery">
+                    <h3>Gallery</h3>
+                    <div class="gallery-grid">
+                        {% for image in project.images.all %}
+                        <div class="gallery-item">
+                            <img src="{{ image.image.url }}" alt="{{ image.caption|default:project.title }}">
+                            {% if image.caption %}
+                            <p class="caption">{{ image.caption }}</p>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="project-details">
+                <div class="price-section">
+                    <h2 class="price">{{ project.price }}</h2>
+                    <p class="project-type">{{ project.get_project_type_display }}</p>
+                </div>
+
+                <div class="project-info">
+                    <h3>Project Details</h3>
+                    <div class="info-grid">
+                        {% if project.area_sqft %}
+                        <div class="info-item">
+                            <strong>Area:</strong> {{ project.area_sqft }}
+                        </div>
+                        {% endif %}
+                        {% if project.bedrooms %}
+                        <div class="info-item">
+                            <strong>Bedrooms:</strong> {{ project.bedrooms }}
+                        </div>
+                        {% endif %}
+                        {% if project.bathrooms %}
+                        <div class="info-item">
+                            <strong>Bathrooms:</strong> {{ project.bathrooms }}
+                        </div>
+                        {% endif %}
+                        {% if project.parking %}
+                        <div class="info-item">
+                            <strong>Parking:</strong> {{ project.parking }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="project-description">
+                    <h3>Description</h3>
+                    <p>{{ project.description|linebreaks }}</p>
+                </div>
+
+                {% if project.get_amenities_list %}
+                <div class="amenities">
+                    <h3>Amenities</h3>
+                    <div class="amenities-list">
+                        {% for amenity in project.get_amenities_list %}
+                        <span class="amenity-tag">{{ amenity }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="contact-section">
+                    <h3>Interested in this project?</h3>
+                    <div class="contact-buttons">
+                        <a href="{% url 'contact_us' %}?project={{ project.id }}" class="btn btn-primary">Contact Us</a>
+                        {% if company_info.whatsapp_number %}
+                        <a href="https://wa.me/{{ company_info.whatsapp_number }}?text=Hi, I'm interested in {{ project.title }}" 
+                           class="btn btn-whatsapp" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
+                        {% endif %}
+                        <a href="tel:{{ company_info.phone }}" class="btn btn-call">
+                            <i class="fas fa-phone"></i> Call Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if related_projects %}
+        <div class="related-projects">
+            <h3>Similar Projects</h3>
+            <div class="related-grid">
+                {% for related in related_projects %}
+                <div class="related-item">
+                    <a href="{% url 'project_detail' related.id %}">
+                        {% if related.image %}
+                        <img src="{{ related.image.url }}" alt="{{ related.title }}">
+                        {% endif %}
+                        <h4>{{ related.title }}</h4>
+                        <p>{{ related.location }}</p>
+                        <span class="price">{{ related.price }}</span>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.project-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.project-location {
+    color: #666;
+    font-size: 1.1em;
+    margin: 10px 0;
+}
+
+.project-status {
+    margin: 15px 0;
+}
+
+.status-badge {
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status-upcoming { background: #ffc107; color: #000; }
+.status-ongoing { background: #17a2b8; color: #fff; }
+.status-completed { background: #28a745; color: #fff; }
+.status-sold_out { background: #dc3545; color: #fff; }
+
+.featured-badge {
+    background: #ff6b35;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    margin-left: 10px;
+}
+
+.project-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin: 40px 0;
+}
+
+.main-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.price {
+    font-size: 2.5em;
+    color: #ff6b35;
+    margin: 0;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.info-item {
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 5px;
+}
+
+.amenities-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.amenity-tag {
+    background: #e9ecef;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.9em;
+}
+
+.contact-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.btn-primary { background: #007bff; color: white; }
+.btn-whatsapp { background: #25d366; color: white; }
+.btn-call { background: #ff6b35; color: white; }
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.related-item {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.related-item:hover {
+    transform: translateY(-5px);
+}
+
+.related-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.related-item h4, .related-item p {
+    padding: 0 15px;
+    margin: 10px 0;
+}
+
+.related-item .price {
+    padding: 0 15px 15px;
+    font-size: 1.2em;
+}
+
+@media (max-width: 768px) {
+    .project-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .contact-buttons {
+        flex-direction: column;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}

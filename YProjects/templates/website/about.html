@@ -1,0 +1,55 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- About Section -->
+<section id="about" style="padding-top: 50px;">
+    <div class="content">
+        <h6>{{ about_us.title|default:"About Harsha Designers" }}</h6>
+        <h3>{{ about_us.subtitle|default:"Best Designers in India" }}</h3>
+        <p>{{ about_us.description|default:"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Expedita temporibus eveniet voluptatibus ipsa molestias quisquam totam sunt cum assumenda? Rem eaque soluta odio vero sequi, expedita voluptate quae voluptas repellat. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptate. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptate. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptate." }}</p>
+        
+        {% if about_us.about_image %}
+        <div style="text-align: center; margin: 30px 0;">
+            <img src="{{ about_us.about_image.url }}" alt="About Us" style="max-width: 100%; height: auto; border-radius: 10px;">
+        </div>
+        {% endif %}
+        
+        <div class="abt-content">
+            <div class="abt-detail">
+                <div class="abt-img">
+                    {% if about_us.about_image %}
+                        <img src="{{ about_us.about_image.url }}" alt="Happy Families">
+                    {% else %}
+                        <img src="{% static 'website/abt1.jpg' %}" alt="Happy Families">
+                    {% endif %}
+                    <h3>{{ about_us.happy_families|default:"30" }}+</h3>
+                    <p>Happy Families</p>
+                </div>
+            </div>
+            <div class="abt-detail">
+                <div class="abt-img">
+                    {% if about_us.about_image %}
+                        <img src="{{ about_us.about_image.url }}" alt="Completed Projects">
+                    {% else %}
+                        <img src="{% static 'website/abt1.jpg' %}" alt="Completed Projects">
+                    {% endif %}
+                    <h3>{{ about_us.completed_projects|default:"30" }}+</h3>
+                    <p>Completed <br>Projects</p>
+                </div>
+            </div>
+            <div class="abt-detail">
+                <div class="abt-img">
+                    {% if about_us.about_image %}
+                        <img src="{{ about_us.about_image.url }}" alt="Landmarks">
+                    {% else %}
+                        <img src="{% static 'website/abt1.jpg' %}" alt="Landmarks">
+                    {% endif %}
+                    <h3>{{ about_us.landmarks|default:"30" }}+</h3>
+                    <p>Landmarks</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
